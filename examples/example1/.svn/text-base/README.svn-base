@@ -1,0 +1,13 @@
+
+
+This directory contains a sequence file, spot.fa, with
+the eight sequences from
+
+To find the Spot_Rela motif, and the 3 parts of the HD
+motif, run the following command:
+
+../../src/gemoda-s -l 50 -g 50 -k 8 -p 8 -m BLOSUM62 -i spot.fa
+
+Or, to find smaller, better conserved motifs, use settings like
+
+../../src/gemoda-s -l 10 -g 20 -k 8 -p 8 -m BLOSUM62 -i spot.fa

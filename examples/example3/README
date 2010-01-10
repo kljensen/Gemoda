@@ -1,0 +1,46 @@
+
+This directory contains two PDB protein structure files,
+1HXQ.pdb and 3FIT.pdb.  In order to discover conserved
+structural motifs within these structures, we must 
+convert them to a format gemoda-r understands.  We
+included a python script for accomplishing this.
+
+Assuming you are working in this directory, run:
+
+	python ../../scripts/gemoda-pdb-preprocess.py 1HXQ.pdb 3FIT.pdb >structs.fa
+
+Now, take a look at the structs.fa file:
+
+	less structs.fa
+
+Notice that it's a pseudo-fastA formatted file.  After
+the sequence label, the first row contains the X coordinates
+of the alpha-carbons.  The second and third rows contain
+the Y and Z coordinates, respectively.
+
+To run the example shown in our manuscript, we will use the
+gemoda-r you compiled in the ../../src/ directory.  Run the
+following command:
+
+	../../src/gemoda-r -i structs.fa -l 30 -g 1.5 -k 3 -p 3 
+
+This searches for motifs of alpha-carbon traces that 1) are
+at least 30 amino acids in length; 2) have a pairwise RMSD,
+with rotation and translation, of no more than 1.5 angstroms
+over every window of 30 amino acids; 3) occur at least 3 times
+in the input set; and 4) occur in at least 3 unique chains in
+the input set.
+
+The first two columns in each motif show the chain and first
+residue of the motif.  With these numbers, and the length of
+the motif, it is easy to visualize the motifs using any number
+of tools.  We like the PyMol and RasMol tools in particular.
+
+The above example uses the clique-finding clustering.  To use
+transitive clustering instead, do
+
+
+	../../src/gemoda-r -i structs.fa -l 30 -g 1.5 -k 3 -p 3 -c1
+
+This produces fewer motifs, with larger support.
+

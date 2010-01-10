@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1"
+   name=""
+   committed-date="2005-02-15T21:07:22.216675Z"
+   url="svn+ssh://spiralrib.mit.edu/data/SVN/Software/gemoda/trunk/doc/tutorial"
+   last-author="kljensen"
+   kind="dir"
+   uuid="68bf6a23-2df0-0310-a746-e5f0efc98162"
+   revision="185"/>
+<entry
+   name="References"
+   kind="dir"/>
+<entry
+   committed-rev="1"
+   name="shiva.tex"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="88076e4bb5696f917f22142d87c86ff0"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   committed-rev="1"
+   name="framed.sty"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="d57399b2fd672c34ee0994b8ee9571a3"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   name="Body"
+   kind="dir"/>
+<entry
+   committed-rev="1"
+   name="Makefile"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="85956de1bb081a57dda14b26db877b4b"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+</wc-entries>

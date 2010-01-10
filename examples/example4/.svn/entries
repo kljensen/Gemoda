@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="145"
+   name=""
+   committed-date="2005-08-02T18:28:21.903773Z"
+   url="svn+ssh://spiralrib.mit.edu/data/SVN/Software/gemoda/trunk/examples/example4"
+   last-author="kljensen"
+   kind="dir"
+   uuid="68bf6a23-2df0-0310-a746-e5f0efc98162"
+   revision="185"/>
+<entry
+   committed-rev="68"
+   name="mcp112-20.seq"
+   text-time="2005-06-09T16:12:32.000000Z"
+   committed-date="2005-06-09T14:32:02.891551Z"
+   checksum="e870113e2d98309aa107263fb697710d"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-06-09T16:12:32.000000Z"/>
+<entry
+   committed-rev="186"
+   name="README"
+   text-time="2005-09-24T19:08:51.000000Z"
+   committed-date="2005-09-24T19:09:20.443497Z"
+   checksum="41f9ffb511cc7a6f9364469131dca3a2"
+   last-author="marksty"
+   kind="file"
+   prop-time="2005-09-22T21:50:54.000000Z"
+   revision="186"/>
+<entry
+   committed-rev="67"
+   name="mcp112-20seqanswers"
+   text-time="2005-06-09T16:12:32.000000Z"
+   committed-date="2005-06-09T14:31:54.523866Z"
+   checksum="f23c29c34d7eea0a5a9485086ccc19ca"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-06-09T16:12:32.000000Z"/>
+</wc-entries>

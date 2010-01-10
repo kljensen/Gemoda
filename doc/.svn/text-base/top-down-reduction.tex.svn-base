@@ -1,0 +1,225 @@
+\documentclass[]{article}
+
+\begin{document}
+
+%% Adjustment of edges in the currently induced graph.
+
+After cliques are found at the current threshold (maximum) in the
+current graph, we must reduce the related values in the graph so that
+these cliques or some portion of them (with reduced length or support)
+are not found again later.  To accomplish this, we reduce the weight of
+each edge to the largest weight at which it would participate in some
+new clique.  To participate in a new clique means that some node that
+was not already part of a clique that included the two nodes connected
+to the edge to be reduced would end up being part of the clique (fully
+connected to each of the other nodes in the clique) at some lower
+threshold, such that its edges to each of the other nodes would also be
+induced.  The point at which all such edges would be induced initially
+is when the threshold reaches the minimum among the weights of all such
+edges, which will be the first point at which all the edges will be
+induced.
+
+In our current graph, we may use $w(a, b)$ to indicate the weight of the
+edge between nodes $a$ and $b$.  We will also consider $T$ to be the set
+of pairs of nodes (cells in the adjacency matrix) that have an edge
+between them in the induced graph at the current threshold.  That is,
+$(a, b) \in T \Longleftrightarrow w(a, b) >= t$.
+
+Start with an edge between two nodes that is induced at the current
+threshold: $(a, b) \in T$.  For any third node $x$, $(a, b, x)$ will
+become a clique whenever the weights of each of the edges between them
+meet the threshold, and thus first when the threshold reaches the
+minimum of the weights of each edge: $\min \{ w(a, b), w(a, x), w(a, y)
+\}$.  Thus to find the largest threshold at which a clique will exist
+among nodes $a$, $b$, and some other node $x$, we calculate:
+
+\begin{eqnarray*}
+\max_x \left\{ \min \{ w(a, b), w(a, x), w(b, x) \} \right\}
+ &=& \max_x \left\{ \min \{ t, w(a, x), w(b, x) \} \right\} \\
+ &=& \max_x \left\{ \min \{ w(a, x), w(b, x) \} \right\}
+\end{eqnarray*}
+.
+
+Of course, for some nodes $x$, the nodes $(a, b, x)$ may already form a
+clique at the current threshold, in which case we want to disqualify
+that node $x$ from the above formula so that we do not simply find that
+same clique again.  To do so, we need to require:
+
+\begin{displaymath}
+(a, x) \not\in T \vee (b, x) \not\in T
+\end{displaymath}
+.
+
+Thus, we must skip nodes $x_i$ for which $(a, x_i) \in T \wedge (b,
+x_i) \in T$, because for each such $x_i$, we have already found the
+clique $(a, b, x_i)$ at the current threshold.  However, these 3-cliques
+can also combine to form new cliques.  In particular, if we have an
+$x_i$ and $x_j$ that are each already in 3-cliques with $(a, b)$, we
+will next form the 4-clique containing all four nodes at the minimum
+among all weights between them:
+
+\begin{eqnarray*}
+\min \{ w(a, b), w(a, x_i), w(b, x_i), w(a, x_j), w(b, x_j), w(x_i, x_j)
+\}
+ &=& \min \{ t, t, t, t, t, w(x_i, x_j) \} \\
+ &=& w(x_i, x_j)
+\end{eqnarray*}
+
+The simplification is due to the fact that each of $x_i$ and $x_j$
+already forms a clique with $(a, b)$ at the current threshold, and the
+weight of any edge can never be greater than the current threshold.  In
+particular, among all such nodes that already participate in cliques
+with $(a, b)$, we will find the next 4-clique combining two of them
+along with $(a, b)$ to be:
+
+\begin{eqnarray}
+\max_{i, j} \left\{ w(x_i, x_j) \right\}, i \neq j, \forall i:
+(a, x_i) \in T \wedge (b, x_i) \in T
+\end{eqnarray}
+.
+
+Again, it may be the case that some of these pairs $x_i$, $x_j$ may
+already be in 4-cliques of $(a, b, x_i, x_j)$ at the current threshold,
+in which case we want to avoid finding them again.  To disqualify such
+pairs, we must simply add the requirement $(x_i, x_j) \not\in T$ to the
+above formula.
+
+At this point, we might consider combinations of larger cliques
+containing $(a, b)$ in the same way we considered combining pairs of
+3-cliques.  However, for an n-clique containing $(a, b)$ to combine with
+some additional node $y$, the additional node must not already be
+connected to all n nodes in the clique in the induced graph at the
+current threshold, or else $y$ would already be included in the clique
+at the current threshold and would thus be disqualified.  If $y$ does
+not already connect to both $a$ and $b$ in the current induced graph,
+then it will already be subsumed in the first calculation of combining
+$(a, b)$ with each other node not already connected to both.  If $y$ is
+already found in 3-clique $(a, b, y)$, then it must not be connected to
+at least one $x_i$ within the n-clique in order to be considered a new
+extension that will only happen at some lower threshold than the current
+value.  In that case, the combination of $x_i$ and $y$ will already be
+considered in the second calculation, combining pairs of nodes that
+already participate in cliques with $(a, b)$, but not with each other.
+Therefore, any higher level of combination of cliques would already be
+manifested in the two low-level combinations described, and simply the
+maximum among the two calculations is guaranteed to be the largest value
+for the threshold at which $(a, b)$ will next participate in some new
+clique.
+
+%% Adjustment of edges downstream of those in the currently induced
+%% graph.
+
+After reducing each edge that is already induced (participates in one or
+more cliques) at the current threshold, we must also reduce edges that
+are ``downstream'' from those induced.  By this, we mean those pairs of
+nodes that sequentially follow nodes that are connected at the current
+induced subgraph.  When a clique is found with nodes $a$ and $b$ at the
+current threshold $t$, we do not want to find the clique $(a + 1, b +
+1)$ at threshold $t - 1$, since that is only a shorter piece of the
+pattern already found with the clique $(a, b)$.  Therefore, for each
+edge $(a, b)$ in the current induced subgraph, we must reduced each of
+the edges $(a + k, b + k)$ sequentially following the connected nodes,
+for $k$ going from $0$ to $t - 1$.  For each of these, we must again do
+calculations similar to those done above for pairs of nodes connected in
+the induced subgraph.
+
+First of all, for simplicity, we will consider those cases where $(a +
+k, b + k) \not\in T \forall k \in \{ 1, \ldots, t-1 \}$.  Unlike before,
+we cannot simplify using the fact that $w(a, b) = t$ since $w(a + k, b +
+k) \neq t$.  For the initial case of $(a + k, b + k)$ combining with
+some new node $x$, we have:
+
+\begin{eqnarray}
+\max_x \left\{ \min \{ w(a + k, b + k), w(a + k, x), w(b + k, x) \} \right\}
+\end{eqnarray}
+
+again with the requirement to disqualify redundant pieces of patterns
+that have already been found as cliques at the current threshold:
+
+\begin{displaymath}
+(a, x - k) \not\in T \vee (b, x - k) \not\in T
+\end{displaymath}
+.
+
+Again, we are skipping those nodes $x_i$ for which $(a, x_i - k) \in T
+\wedge (b, x_i - k) \in T$, since for each of these we have already
+found the clique $(a, b, x_i - k)$ at the current threshold, so $(a + k,
+b + k, x_i)$ will simply be a piece of that existing clique rather than
+a new clique.  But again, we must also consider new combinations among
+these nodes $x_i$ to form new 4-cliques with $(a + k, b + k)$:
+
+\begin{displaymath}
+\min \{ w(a + k, b + k), w(a + k, x_i), w(b + k, x_i),
+        w(a + k, x_j), w(b + k, x_j), w(x_i, x_j) \}
+\end{displaymath}
+
+with the condition $(x_i - k, x_j - k) \not\in T$.
+
+In particular, among all such nodes that already participate in cliques
+with $(a, b)$, we will find the next 4-clique combining two of them
+along with $(a + k, b + k)$ to be:
+
+\begin{equation}
+\max_{i, j} \left\{
+\min \{ w(a + k, b + k), w(a + k, x_i), w(b + k, x_i),
+        w(a + k, x_j), w(b + k, x_j), w(x_i, x_j) \}
+\right\}, i \neq j, \forall i:
+(a, x_i - k) \in T \wedge (b, x_i - k) \in T
+\end{equation}
+
+again with the requirement $(x_i - k, x_j - k) \not\in T$ to force us to
+only consider new 4-cliques, rather than simply finding pieces of
+patterns that have already been found due to cliques at the current
+threshold.  Again, the combination of $(a + k, b + k)$ with other nodes
+not already ``downstream'' of a clique with $(a, b)$ along with the
+combination of those nodes that are ``downstream'' of such cliques, but
+not already found in cliques with each other, guarantees that we will
+find the next threshold where $(a + k, b + k)$ will participate in a
+clique that is not part of one that has already been found, because any
+larger cliques that are combined will also include these smaller
+combinations.
+
+%% Adjustment of edges downstream of one or more in the currently induced
+%% graph.
+
+The remaining case to be considered is when for some value $k'$, not
+only is $(a, b)$ induced at the current threshold, but also $(a + k', b
++ k')$ is induced.  At this level, there may be (and in fact will be)
+new nodes $x_i$ which are in cliques with $(a + k', b + k')$, while
+these did not form cliques $(a, b, x_i - k')$ upstream.  Thus whenever
+we have an induced edge $(a + k', b + k')$ as well the original induced
+edge $(a, b)$, we must add some new nodes to the disqualified $x_i$
+nodes that already participate in a clique found upstream of the current
+$(a + k, b + k)$.  That is, our disqualified nodes $x_i$ when
+considering the reduction of $(a + k, b + k)$ will contain all nodes
+that form a clique $(a + k', b + k', x_i - k + k')$ at some point
+upstream ($k' <= k$) of the current point.  Once again, we end up with
+the same calculations for any $(a + k, b + k)$, except that we must
+include new nodes $x_i$ each time one participates in an upstream clique
+with some $(a + k', b + k')$, and we must ignore those combinations of
+$(a + k, b + k, x_i, x_j)$ when these are all downstream of some clique
+that already exists in the current induced graph: $(a + k', b + k',
+x_i - k + k', x_j - k + k')$.
+
+In general, our process is actually one simple idea.  At each edge $(a,
+b)$ in the current induced graph, we must reduce its weight, as well as
+those of all subsequent nodes $(a + k, b + k)$ which consist of shorter
+pieces of those patterns and cliques already found, to the next
+(largest) threshold at which some node will be added to an existing
+clique containing the pair of nodes whose edge is being reduced.  We
+first consider single nodes which will combine with these two nodes to
+form a new 3-clique, while excluding those third nodes which already
+form a clique with these two nodes or at some point upstream.  Then
+pairs of those excluded nodes that did not already form a clique along
+with the two original nodes at this point or any point upstream can also
+be combined to form new 4-cliques.  The maximum value at which either of
+these new combinations occur will be the next threshold at which the
+edge under consideration will participate in a new clique, and thus is
+the value to which its weight should be reduced.
+
+This reduction calculation ensures that only new (not redundant, meaning
+not simply being part of some larger pattern with either greater support
+or greater length) patterns will be found, while also allowing all such
+non-redundant patterns to be found.
+
+\end{document}

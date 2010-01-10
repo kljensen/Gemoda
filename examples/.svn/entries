@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="185"
+   name=""
+   committed-date="2005-09-24T18:51:16.564188Z"
+   url="svn+ssh://spiralrib.mit.edu/data/SVN/Software/gemoda/trunk/examples"
+   last-author="marksty"
+   kind="dir"
+   uuid="68bf6a23-2df0-0310-a746-e5f0efc98162"
+   revision="185"/>
+<entry
+   name="example4"
+   kind="dir"/>
+<entry
+   committed-rev="1"
+   name="Makefile.am"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="8dfeecd4806c0976757af8f983f0806d"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   name="example1"
+   kind="dir"/>
+<entry
+   name="example2"
+   kind="dir"/>
+<entry
+   name="example3"
+   kind="dir"/>
+</wc-entries>

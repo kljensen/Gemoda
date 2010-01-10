@@ -1,0 +1,16 @@
+
+Use the following sequence of commands
+to install the Gemoda implementation
+provided by this software:
+
+./configure
+make 
+make install
+
+Note that the software requires the GNU
+Scientific Libraries (GSL).
+
+To familiarize you with the software, 
+we included 3 examples in the examples/
+subdirectory.  The README files in these
+folders details how to run the software.

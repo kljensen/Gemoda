@@ -1,0 +1,122 @@
+main.c
+
+ main()
+
+  //testNewConv(words, ac, wc, mySequences, numberOfSequences);
+	
+  doConv(words, ac, wc, mySequences, numberOfSequences);
+  doConv2(words, ac, wc, mySequences, numberOfSequences);
+
+conv.c
+
+// Below I'm defining an object to
+// hold all the information i need
+// to do convolution
+
+ Structure to hold list of cliques for each offset:
+
+ csc: convSeqCliq_t*
+  numSeq: int
+  seq: convSeq_t[]
+   size: int
+   pos: convPos_t[]
+    numCliqs: int
+    cliq: int[]
+
+ Structure to hold list of offsets for a particular clique:
+
+ col: cOl_t*
+  num: int
+  off: cOffset_t[]
+   seq: int
+   pos: int
+
+ doConv()
+
+  Create a list of cliques for each sequence offset:
+
+  // Get our convolution object
+  csc = initCSC(words, ac, seqs, numSeq);
+
+  Iterate over cliques:
+
+  // now do the convolution
+  // 
+  // For each clique, extend it to the right
+
+   Create the list of sequence offsets for this clique:
+
+   col = initCOL(ac, i, words);
+
+   Extend the pattern to the right by convolution:
+
+   convExtend_r(csc, col, d);
+
+ convExtend_r()
+
+  Print the cliques containing each offset.
+
+  pickCliques(csc, col, d);
+
+ pickCliques()
+
+  Create an array of clique numbers and the number of vertices in this
+clique that are also contained in each:
+
+  //  Find out how many unique cliques hit these offsets and
+  //  what the support for each clique is
+
+  Sort the array by the number of vertices in each clique:
+
+  qsort(a, (size_t) (total), sizeof(cCount_t), compareCCount);
+
+  Make a matrix with the number of intersections (shared vertices)
+between each pair of cliques:
+
+  //  Find out how many offsets each clique shares
+
+  Iterate over cliques intersecting this clique:
+
+  //  Go through sim and make cOl_t objects for
+  //  each extension that is unique!
+
+   Skip cliques that have already been checked:
+
+   //  See if this clique shares 100% of it's
+   //  offsets with another clique
+
+   Iterate over all offsets within this clique:
+
+   //  Extend this further
+
+    Iterate over each clique containing this offset:
+
+     //csc->seq[col->off[i].seq].pos[col->off[i].pos].cliq[m];
+
+ doConv2()
+
+/*
+ *	-start with a clique of words
+ *	-from the words get the offsets
+ *		-go the next character for each offset
+ *		-make an adjacency matrix for the offsets
+ *		-find hte cliques
+ *		-extend each clique
+ *
+ */
+
+newConv.c
+
+ testNewConv()
+
+  Store absolute position for each sequence position,
+  store sequence position for each absolute position.
+
+   offsetToIndex[i][j] = k;
+   initLoff(&mlo[k], 0, i, j);
+
+  Make new graph (adjacency matrix) for word instances (absolute
+positions), connections between word instances:
+  [Note only for p >= n]
+
+   bigSim[n][p] = '1';

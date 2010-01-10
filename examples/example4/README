@@ -1,0 +1,14 @@
+
+
+This directory contains a sequence file, mcp112-20.seq, with
+the twenty sequences with a hidden embedded motif (similar to
+the LD-motif problem proposed by Pevzner et. al.).
+
+To find the motif use:
+../../src/gemoda-s -l 11 -g 7 -k 20 -p 20 -m dna_idmat -i mcp112-20seq
+
+The calculation of motif signifigances will take a long time
+for this example.  To expedite this, try '-s1000', which will
+sample every 1000th point in the similarity matrix.  We've 
+found that sampling almost never changes the relative signifigance
+of motifs.

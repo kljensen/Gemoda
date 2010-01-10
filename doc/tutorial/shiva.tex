@@ -1,0 +1,45 @@
+\documentclass[notitlepage]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}    % if you want extra symbols
+\usepackage{mathrsfs}
+\usepackage{program}
+\usepackage{newlfont}
+\usepackage{framed}
+\usepackage{verbatim}
+
+\newcommand{\kljExample}[1]{\begin{center} \vspace{\parskip}\fbox{%
+	    \parbox{0.95\textwidth}{#1} }\vspace{\parskip}\end{center}}
+%\newcommand{\kljExample}[1]{\begin{center} \vspace{\parskip}%
+	    %\colorbox{%
+	    %\vspace{\parskip}\end{center}}%
+	    %}
+
+
+\newcounter{theKljEx}
+\newenvironment{kljEx}{\stepcounter{theKljEx}\begin{leftbar}\textbf{Example \arabic{theKljEx}: }}{\end{leftbar}}
+
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\brac}[1]{\left[#1\right]}
+\newcommand{\braces}[1]{\left\{#1\right\}}
+\newcommand{\avector}[2]{(#1_1,#1_2,\ldots,#1_{#2})} 
+\newcommand{\aset}[2]{{#1_1,#1_2,\ldots,#1_{#2}}} 
+\newcommand{\ith}[1]{{#1^{\textrm{th}}}} 
+
+\DeclareSymbolFont{AMSb}{U}{msb}{m}{n}
+\DeclareMathSymbol{\N}{\mathbin}{AMSb}{"4E}
+%\DeclareMathSymbol{\Z}{\mathbin}{AMSb}{"5A}
+\DeclareMathSymbol{\realNums}{\mathbin}{AMSb}{"52}
+%\DeclareMathSymbol{\Q}{\mathbin}{AMSb}{"51}
+%\DeclareMathSymbol{\I}{\mathbin}{AMSb}{"49}
+%\DeclareMathSymbol{\C}{\mathbin}{AMSb}{"43}
+
+\begin{document}
+    \input{Body/titlePage.tex}
+    \input{Body/abstract.tex}
+    \input{Body/body.tex}
+
+    \scriptsize
+    \bibliography{References/research-new}
+    \bibliographystyle{unsrt}
+\end{document}

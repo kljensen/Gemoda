@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="143"
+   name=""
+   committed-date="2005-08-02T18:19:03.007246Z"
+   url="svn+ssh://spiralrib.mit.edu/data/SVN/Software/gemoda/trunk/examples/example1"
+   last-author="kljensen"
+   kind="dir"
+   uuid="68bf6a23-2df0-0310-a746-e5f0efc98162"
+   revision="185"/>
+<entry
+   committed-rev="1"
+   name="spot.fa"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="f0a608307a2ee735925b6a4c6c366ae4"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   committed-rev="143"
+   name="README"
+   text-time="2005-09-22T21:50:31.000000Z"
+   committed-date="2005-08-02T18:19:03.007246Z"
+   checksum="f7868f98f34f8ba19336d6effe9d1399"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-09-22T21:50:31.000000Z"/>
+</wc-entries>

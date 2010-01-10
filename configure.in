@@ -1,0 +1,91 @@
+dnl Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.54])
+dnl Provide *any* file to initialize AC
+dnl AC_INIT(src/gemoda-s.c)
+AC_INIT([gemoda], [1.0], [kljensen@mit.edu])
+AC_CONFIG_SRCDIR(src/gemoda-s.c)
+AC_CONFIG_AUX_DIR(config)
+
+
+
+dnl use config.h instead of the -D compile-time flags
+
+dnl The directory where AC should keep it's
+dnl temporary files
+
+dnl Initialize automake
+dnl AM_INIT_AUTOMAKE([gemoda], [1.0], [kljensen@mit.edu])
+dnl AM_INIT_AUTOMAKE([dist-bzip2])
+AM_INIT_AUTOMAKE([no-define dist-bzip2 dist-zip])
+AM_CONFIG_HEADER([src/config.h])
+
+
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_MAKE_SET
+
+dnl We need libtool to compile a convience library
+dnl for the fastaSeqIO functions (they have their
+dnl own CVS repository cause they're used in many
+dnl projects so they have a subdirectory in src.
+dnl But, there's no good way to link against code
+dnl in subdirs with automake, except convenience libs.
+AC_DISABLE_SHARED
+AC_PROG_LIBTOOL
+
+dnl Checks for libraries.
+dnl have to check in this order, see
+dnl http://www.gnu.org/software/gsl/manual/gsl-ref_41.html
+SCILIBS=""
+MATHLIB=""
+AC_CHECK_LIB(m,main,[SCILIBS="-lm"],[], [-lm])
+AC_CHECK_LIB(m,main,[MATHLIB="-lm"],[], [-lm])
+AC_SUBST(MATHLIB)
+
+dnl what linear algebra blas package will we use?
+LINALG_LIB="no"
+
+dnl do we have atlas cblas
+BLAS_LIB="no"
+dnl do we have atlas 
+ATLAS_LIB="no"
+
+
+dnl check for atlas cblas
+#AC_CHECK_LIB(cblas,main, [BLAS_LIB="-lcblas"],  , [-lcblas])
+if test \! "$BLAS_LIB" = "no"; then
+	dnl check for atlas
+	AC_CHECK_LIB(atlas,main, [ATLAS_LIB="-latlas"],  , [-latlas])
+	if test \! "$ATLAS_LIB" = "no"; then
+		LINALG_LIB="$BLAS_LIB $ATLAS_LIB"	
+	fi	
+else
+	dnl if no atlas, check for gsl replacement
+	AC_CHECK_LIB(gslcblas,main, [LINALG_LIB="-lgslcblas"],
+		     [AC_MSG_ERROR([*** Error, GNU Scientific Library BLAS required: http://www.gnu.org/software/gsl/])] , [-lgslcblas])
+fi
+
+
+AC_CHECK_LIB(gsl,main, [SCILIBS="-lm $LINALG_LIB -lgsl"],
+	     [AC_MSG_ERROR([*** Error, GNU Scientific Library required: http://www.gnu.org/software/gsl/])], [-lm "$LINALG_LIB"  -lgsl])
+AC_SUBST(SCILIBS) 
+
+dnl the $(SCILIBS) variable can be accessed in src/Makefile.am
+dnl so we can compile gemoda-p with the gsl libraries.
+
+
+
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(malloc.h unistd.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl Checks for library functions.
+AC_CHECK_FUNCS(strerror strstr)
+
+AC_OUTPUT(Makefile src/FastaSeqIO/Makefile src/Makefile scripts/Makefile)

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="185"
+   name=""
+   committed-date="2005-09-24T18:51:16.564188Z"
+   url="svn+ssh://spiralrib.mit.edu/data/SVN/Software/gemoda/trunk/examples/example2"
+   last-author="marksty"
+   kind="dir"
+   uuid="68bf6a23-2df0-0310-a746-e5f0efc98162"
+   revision="185"/>
+<entry
+   committed-rev="177"
+   name="letters.seq"
+   text-time="2005-09-24T18:49:48.000000Z"
+   committed-date="2005-09-23T21:52:33.966486Z"
+   checksum="fc046483bffbf526dff8b90807da6aef"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-09-24T18:49:48.000000Z"/>
+<entry
+   committed-rev="185"
+   name="README"
+   text-time="2005-09-24T18:50:36.000000Z"
+   committed-date="2005-09-24T18:51:16.564188Z"
+   checksum="f78d0877b1263334fed0bb8d3b5b2ead"
+   last-author="marksty"
+   kind="file"
+   prop-time="2005-09-24T18:49:48.000000Z"/>
+</wc-entries>

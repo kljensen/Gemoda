@@ -1,0 +1,277 @@
+
+
+\section{Introduction}
+Shiva was inspired principally by Teiresias~\cite{rigoutsos1998combinatorial}
+and various frequent itemset mining algorithms~\cite{agrawal1995mining,
+zaki1997fast}.  Teiresias is similar to most frequent itemset mining
+methods because it uses bottom--up approach to building maximal patterns.
+That is, if a pattern \texttt{AB} occurs 5 times in a dataset, any longer
+pattern like \texttt{ABC} or \texttt{ABDZ} must occur 5 of fewer times.
+Thus, most frequent itemset mining algorithms enumerate seed patterns,
+which are the smallest patterns of interest, and successively combine
+these patterns to build longer patterns that have a decreasing number
+of occurances.  In Teiresias, this process is called convolution.
+
+The principle difference between Teiresias and most frequent itemset mining
+algorithms is that Teiresias acts on stochastic time--series data, usually
+biosequences or integers (of course, biosequences are only ``time--series''
+in the loose sense --- there is a time--like dimension in that the sequences
+are a linear progression of characters).  Most frequent itemset mining
+tools use market basket data sets, for example, a collection of products
+that a customer bought.  Patterns in market basket data can be used to
+predict what other products a customer might buy (this is how Amazon.com
+works).  The difference between time--series data and market basket data
+(both are stochastic in that they consist of discrete values sampled from
+some real space) is that the former is ordered, whereas the latter is
+an unordered set.  For similarly sized datasets, this makes time--series
+pattern discovery much easier.  However, typically time--series datasets,
+such as biosequences or stock data, are much larger.  For example, a person
+may only purchase a few products from Amazon; however, gene sequences can
+consist of may thousands of characters.
+
+So, what is Shiva's contribution?  Well\ldots there are a few things that
+leap to mind.  They are, in order of importance, as follows:
+\begin{enumerate}
+    \item   \textbf{Pattern--modeling independent output}.
+	    Shiva essentially asks the users ``what do you consider
+	    to be a pattern?'' and then provides the user with a
+	    provably exhaustive set of patterns in their data.
+	    However, Shiva makes no attempt to model these patterns
+	    leaving that up to the user.  That is, given the Shiva
+	    output you could model a pattern using any number of 
+	    options including, Markov models, position weight matrices (PWMs),
+	    or regular expressions.
+    \item   \textbf{Multidimensional real numbered data input}.  In the 
+	    most general sense, the input to Shiva is a set of sequences,
+	    each timepoint of which is a $K$ dimensional feature, ie. it
+	    is a point in $\realNums^{K}$
+    \item   \textbf{Application specific similarity metrics}.  Shiva uses
+	    a user--defined function for detemining similarity.  In the
+	    context of biosequences, a user would use something like a
+	    Smith--Waterman alignment score.  But, for stock data, the user
+	    may use another funtion, such as the difference in prices,
+	    the difference in derivatives, or some arbitrary function,
+	    like the wavelet transform at that point.  Basically, given
+	    snippets of a time--series, Shiva lets the user define how
+	    ``far apart'' they are.
+    \item   \textbf{Application specific clustering}.  In the previous
+	    bullet I noted that Shiva lets users define degree of similarity.
+	    Shiva also lets users determine \emph{identity} via a generic
+	    clustering module.  In more rigorous cases, this might be something
+	    like clique--finding, or it could be some more lax, such as 
+	    K--means clustering or nearest--neighbor clustering.
+\end{enumerate}
+
+\section{A motivating example}
+The primary motivation for Shiva was our work with cis--regulatory sequences.
+We found that regular expressions were poor representations of binding sites
+and that, instead, these were better captured with PWMs.  From a biological
+perspective, this makes more sense --- the $k_D$ of binding between the trans
+and cis factors are probibalistic, not deterministic.  Thus, in Vipin's work,
+he was forced to use combinations of patterns in an effort to piece together
+a PWM from many regular expressions.
+
+The LexA regulon consists of 9 gene sequence that are regulated by a single 
+protein trans factor.  The binding site of this trans factor is found in 8 
+of these sequences.  If we ask Teiresias to return all $L=10, W=20, K=5$ patterns
+we get\\	
+    {
+	\begin{center}
+	\ttfamily
+	\begin{tabular}{ccl}
+	    5 & 4 & CTGTATAT.....CAG 0 355 0 376 4 298 6 326 7 363 \\
+	    5 & 5 & CTGTAT....A..CAG 0 376 1 322 4 298 6 326 7 363 \\
+	    5 & 5 & ACTGTA.....A..CAG 0 375 1 321 3 358 4 297 7 362 \\
+	    5 & 5 & CTGTA.AT..A..CAG 0 376 3 359 4 298 6 326 7 363\\ 
+	    6 & 5 & CTGTA.AT.....CAG 0 355 0 376 3 359 4 298 6 326 7 363\\
+	    5 & 5 & ACTGT.T....A..CAG 0 375 1 321 4 297 5 307 7 362\\
+	    5 & 5 & ACTGT...T..A..CAG 0 375 3 358 4 297 5 307 7 362\\
+	    5 & 5 & CTGT.T.T..A..CAG 0 376 4 298 5 308 6 326 7 363
+	\end{tabular}
+	\end{center}
+    }
+So, collectively, these patterns hit 7 of the 8 sequences; however, none of 
+the patterns individually hits more than 5 sequences.  Basically, this is
+just because regular expressions don't capture such sites well.
+
+Using Shiva with a Smith--Waterman alignment metric gives better results in this
+case.  We tell Shiva to find us all patterns such that, on a pairwise basis,
+each window of 20 nt in each instance contains at least 10 nt in common to each
+other instance, and the pattern occurs in at least 8 sequences.  Shiva returns
+only a single pattern: \\
+    {
+	\begin{center}
+	\ttfamily
+	\begin{tabular}{ccl}
+	   0  353 &TGCTGTATATACTCACAGCA \\
+	   0  374 &AACTGTATATACACCCAGGG \\
+	   1  320 &TACTGTATGAGCATACAGTA \\
+	   2  230 &ACCTGAATGAATATACAGTA \\
+	   3  357 &TACTGTACATCCATACAGTA \\
+	   4  296 &TACTGTATATTCATTCAGGT \\
+	   5  306 &AACTGTTTTTTTATCCAGTA \\
+	   6  324 &ATCTGTATATATACCCAGCT \\
+	   7  361 &TACTGTATATAAAAACAGTA \\
+	\end{tabular}
+	\end{center}
+    }
+Notice that here, only a handful of the positions within the pattern are
+fully conserved .  However, most of the positions have ``preferences.''
+For example, the seventh position is mostly A\@.  This pattern can be expressed
+as a PWM, thus preserving these preferences in the matrix probabilities.
+Notably, this pattern is exactly the experimentally determined motif.
+
+
+\section{A little rigor}
+
+    \subsection{The basic inputs and scanning phase}
+	Having provided some motivation, I will now pen some math behind Shiva.  I will
+	be a general as possible to begin.  Then, I will narrow the focus to biosequences
+	and provide a few more interesting examples.
+
+	The input to Shiva is a set of sequences $S=\braces{s_0,s_1,\ldots,s_n}$, where sequence
+	$i$ has length $W_i$.  Each $s_i$ is a sequence of points in a $K$--dimensional space (ie.
+	a $K$--dimensional feature vector).  So, for example, the $\ith{j}$ member of the 
+	$\ith{i}$ sequence is $s_{i,j} = \paren{s_{i,j,0}, s_{i,j,1}, \ldots,s_{i,j,K}}$.
+
+	\begin{kljEx}
+	    Say we have two small peptides and we're interested in their
+	    structural properties.  For each amino acid, we have a two--dimensional
+	    feature vector.  The first feature is the hydrophobicity index~\cite{argos1982structural}
+	    and the second is the size of the amino acid: 1 if it is over the
+	    50$^{th}$ percentile and 0 otherwise.  The two peptides are \texttt{AIKDWR}
+	    and \texttt{DIHV}\@.  Our two sequences are then
+		\begin{eqnarray*}
+		    \text{seq--0} & = &	\begin{pmatrix}
+					    0.61 & 2.22 & 1.15 & 0.46 & 2.65 & 0.60\\
+					    0 & 1 & 1 & 0 & 1 & 1
+					\end{pmatrix} \\
+		    \text{seq--1} & = &	\begin{pmatrix}
+					    0.46 & 2.22 & 0.61 & 1.32 \\
+					    0 & 1 & 1 & 0
+					\end{pmatrix},
+		\end{eqnarray*}
+	    such that
+		\begin{eqnarray*}
+		    s_{0,0,0} & = & 0.61 \\
+		    s_{1,0,0} & = & 0.46 \\
+		    s_{1,1,1} & = & 1 \\
+		    s_{0,3,1} & = & 0 \\
+		    s_{1,2,0} & = & 0.61,
+		\end{eqnarray*}
+	    and so on.
+	\end{kljEx}
+
+	Typically, a user is interested in a patterns that have a minimal length
+	(ie. patterns of length 1 are not interesting, whereas patterns of length
+	10 might be depending on the context).  We denote this user--supplied
+	length as $L$ and we define a symmetric matrix $A$ which of size $N =
+	\sum_{0}^{i}W_i-L$.  That is, $A$ is a matrix with one index for each
+	window of size $L$ in our entire sequence set.  For example, the $10^{th}$
+	window of size $L$ in the $5^{th}$ sequence is the word $s_{i,9:9+L-1}$,
+	where ``$9:9+L-1$'' denotes ``position $9$ through position $9+L-1$,''
+	inclusive.  To keep track of which window corresponds to each index in
+	$A$ we define the function $\mathscr{M}(s_{i,j:j+L-1})\mapsto q \in
+	[0, \sum_{0}^{i}W_i-L]$\footnote{Also, for the sake of simplicity (ha),
+	we define $(s_{i,j}+1)$ to be $s_{i,j+1}$, unless $s_{i,j+1}$ does not 
+	exist, in which case $(s_{i,j}+1)$ is undefined.}.  Similarly, $\mathscr{M}^{-1}(q) \mapsto
+	(s_{i,j:j+L-1})$ such that $i\in n$ and $j \in W_i-L$.
+
+	Now, $A_{i,j}$ is equal to $\mathscr{F}(\mathscr{M}^{-1}(i), \mathscr{M}^{-1}(j))$,
+	where $\mathscr{F}$ is a user--supplied function that compares window $i$ with 
+	window $j$ and returns a real--valued number: the ``distance'' between the two
+	windows.
+
+	\begin{kljEx}
+	    Say we have two DNA sequences --- seq--0 = \texttt{AATTGGCC}
+	    and seq--1 = \texttt{GATAGGA} --- and that we're interested
+	    in patterns that are at least 5 bases long.  Also, here, we
+	    will consider the sequences as just a series of characters,
+	    that is, a one--dimensional feature vector.  We'll define
+	    $\mathscr{F}(A,B)$ to be the Hamming distance: the number
+	    of mismatches between string $A$ and string $B$.
+
+	    There are 7 windows of size 5 in the sequences:
+		\begin{eqnarray*}
+		    \mathscr{M}^{-1}(0) & = &	s_{0,0:4} \\
+					& = &	\texttt{AATTG}\\
+		    \mathscr{M}^{-1}(1) & = &	s_{0,1:5} \\
+					& = &	\texttt{AATTG} \\
+					& \vdots & \\
+		    \mathscr{M}^{-1}(6) & = &	s_{1,2:6} \\
+					& = &	\texttt{TAGGA}.
+		\end{eqnarray*}
+	    The members of the matrix $A$ are computed as follows:
+		\begin{eqnarray*}
+		    A(0,0) = \mathscr{F}(\texttt{AATTG},\texttt{AATTG}) & = & 0 \\
+		    A(0,1) = \mathscr{F}(\texttt{AATTG},\texttt{ATTGG}) & = & 2 \\
+					& \vdots & \\
+		    A(2,5) = \mathscr{F}(\texttt{TTGGC},\texttt{ATAGG}) & = & 3 \\
+					& \vdots & \\
+		    A(6,6) = \mathscr{F}(\texttt{TAGGA},\texttt{TAGGA}) & = & 0.
+		\end{eqnarray*}
+	    The matrix $A$ is then
+		\begin{eqnarray*}
+		    A	& = &	\begin{bmatrix}
+				    0 & 2 &  5 & 5 & 2 & 3 & 4 \\
+				    - & 0 &  3 & 5 & 3 & 1 & 4 \\
+				    - & - &  0 & 2 & 5 & 3 & 2 \\
+				    - & - &  - & 0 & 5 & 5 & 3 \\
+				    - & - &  - & - & 0 & 4 & 4 \\
+				    - & - &  - & - & - & 0 & 4 \\
+				    - & - &  - & - & - & - & 0
+				\end{bmatrix},
+		\end{eqnarray*}
+	    where the $-$ is used because the matrix is symmetric.
+	\end{kljEx}
+
+
+
+    \subsection{The convolution phase}
+	At this point we have a matrix $A$ that contains the distances between
+	each window in the dataset.  In Teiresias--speak, each index in $A$ is 
+	an instance of an elementary pattern, which we will grow into longer
+	patterns.  Another way of looking at this is that $A$ is simply a distance
+	matrix that could be used to plot the windows in some high--dimensional
+	space.  Now, we're interested in clustering these windows together and
+	``extending'' them out, ie. turning two overlapping windows of length $L$
+	into one window of length $L+1$.  There are two logical ways to do this
+	that I will call ``bottum--up'' and ``top--down.''  The first is more 
+	common (and arguably logical); however, the later is the only way
+	that we have implemented.
+
+	\subsubsection{Bottum--up convolution}
+	    We define a clustering function $\mathscr{C}(A) = \{c_0, c_1,\ldots, c_Z\}$
+	    where each $c_i$ is a set of indices in $A$ and $c_i[q]$ is the $q^{th}$ member
+	    of $c_i$.  Note that $\mathscr{C}$ can
+	    be any function and that each $c_i$ may have a non--null intersection with
+	    any $c_j$.  In Teiresias terms, each set $c_i$ is an elementary pattern;
+	    however, the pattern is not described as a regular expression, but instead
+	    as a list of offsets.
+
+	    We define the ``directed intersection'' of two elementary
+	    patterns: $c_i \otimes c_j = d$, where $d$ is the
+	    set of those indices in $c_i$ such that $\mathscr{M}(
+	    \mathscr{M}^{-1}(c_i[q])+1 )$ is in $c_j$.	That is, the set
+	    of indices in $c_i$ that are located, in the sequences $S$,
+	    one position to the left of the indicies in $c_j$.	In terms
+	    of Teiresias, we're trying to extend the elementary pattern
+	    $c_i$ into the elementary pattern $c_j$.  Now, $d$ is an
+	    elementary pattern corresponding to a window of size $L+1$.
+
+	    \begin{program}
+		\BEGIN \\%
+		    k = 0
+		    \FOR i=0 \TO \sum_{0}^{p}W_p-L \STEP 1 \DO
+			\FOR i=0 \TO \sum_{0}^{p}W_p-L \STEP 1 \DO
+			    \IF \|c_i \otimes c_j\| \ne 0
+				d_k = c_i \otimes c_j
+				k=k+1
+			    \FI
+			\OD
+		    \OD
+		\END
+	    \end{program}
+
+	
+	\subsubsection{Top--down convolution}

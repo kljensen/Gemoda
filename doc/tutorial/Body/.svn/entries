@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1"
+   name=""
+   committed-date="2005-02-15T21:07:22.216675Z"
+   url="svn+ssh://spiralrib.mit.edu/data/SVN/Software/gemoda/trunk/doc/tutorial/Body"
+   last-author="kljensen"
+   kind="dir"
+   uuid="68bf6a23-2df0-0310-a746-e5f0efc98162"
+   revision="185"/>
+<entry
+   committed-rev="1"
+   name="abstract.tex"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="799460f5d554bf7d42de8058432b5e32"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   committed-rev="1"
+   name="body.tex"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="9880935fd779dea92286917d69a3ed9f"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   committed-rev="1"
+   name="titlePage.tex"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="a93e77126a3b82051875827f0f448120"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+</wc-entries>

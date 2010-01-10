@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1"
+   name=""
+   committed-date="2005-02-15T21:07:22.216675Z"
+   url="svn+ssh://spiralrib.mit.edu/data/SVN/Software/gemoda/trunk/doc/tutorial/References"
+   last-author="kljensen"
+   kind="dir"
+   uuid="68bf6a23-2df0-0310-a746-e5f0efc98162"
+   revision="185"/>
+<entry
+   committed-rev="1"
+   name="research-new.bib"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="13b1219c019afaa797176cb3aabb1b8e"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+</wc-entries>

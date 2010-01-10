@@ -1,0 +1,88 @@
+main.c
+ main()
+  Get command-line options:
+	"Usage: %s -i <FastA sequence file> -l <word size> -g <threshold> [-o <output file>]\n",
+
+  Load sequences:
+	// Allocate some sequences
+	mySequences = seqReadFunct(SEQUENCE_FILE, &numberOfSequences);
+
+  Create list of words (with indices to each instance within the sequences):
+	words = countWords2(mySequences, numberOfSequences, L, &wc);
+
+  Create scoring matrix for pairs of words:
+	score = alignWords(words, wc);
+
+  Change scoring matrix to binary (1 <==> elt > g):
+	thresHold(score, wc, g);
+
+  Print graph information, as connections between words:
+	makeGraph(score, wc, 1, words);
+
+  Remove all non-clique connections for efficiency:
+	status = 1;
+	while (status == 1) {
+		printf("Min iteration\n");
+		status = minConnect(score, wc, 2);
+	}
+
+  Get a list of all cliques within the graph:
+	ac = getCliques3(score, wc);
+
+Supporting Functions:
+
+FastaSeqIO/fastaSeqIO.c
+ ReadFSeqs()
+ Return an array of sequences.
+ The length of the array is stored in numberOfSequences.
+ 
+ fSeq_t[] aos: array of sequences
+  char[] label: null-terminated string containing the sequence name
+  char[] seq: null-terminated string containing sequence chars
+
+words.c
+ countWords2() 
+ Return an array of words, each of which contains an array of (support)
+instances.
+ Each instance is represented by sequence number and position within the
+sequence, and also includes the index of the previous and next word in
+the sequence within the array of words.
+ The length of the array is stored in numWords.
+
+ sPat_t[] words: array of distinct words
+  char[] string: pointer to string (first instance in sequences)
+  int length: number of chars (to be used) in string
+  int support: number of instances of word in sequences
+  sOffset_t[] offset: instances
+   int seq: sequence index (within fSeq_t[])
+   int pos: position index within sequence (fSeq_t[seq].seq[])
+   int prev: index within sPat_t[] of previous word
+   int next: index within sPat_t[] of next word
+
+align.c
+ alignWords()
+ Return an integer matrix for the score between each pair of words.
+ The score is actually the sum of scores between each pair of letters in
+the words.
+
+ thresHold()
+ Change the input matrix to binary, using the threshold value.
+
+ makeGraph()
+ Print information about graph connections (pairs of words).
+ 
+ minConnect()
+ Remove connections from all nodes with fewer than m connections.
+ This is done recursively so that nodes which have too few connections
+as a result can also be cleared, until no more can be cleared.
+
+graph.c
+ getCliques3()
+ Reduce the matrix 
+ Return the cliques of the given graph.
+
+ ch_t ac: all cliques
+  int n: number of cliques
+  c[]: cliques
+   int size: number of members of clique
+   int vertex[]: members of clique (by array index)

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="144"
+   name=""
+   committed-date="2005-08-02T18:22:31.917030Z"
+   url="svn+ssh://spiralrib.mit.edu/data/SVN/Software/gemoda/trunk/examples/example3"
+   last-author="kljensen"
+   kind="dir"
+   uuid="68bf6a23-2df0-0310-a746-e5f0efc98162"
+   revision="185"/>
+<entry
+   committed-rev="1"
+   name="trace.pdb"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="7d9ef203b2ca023bee198376510c2792"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   committed-rev="1"
+   name="1HXQ.pdb"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="58bd7e7c24243cf5c7912015d6c15cd0"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   committed-rev="1"
+   name="foo.pdb"
+   text-time="2005-02-23T17:57:25.000000Z"
+   committed-date="2005-02-15T21:07:22.216675Z"
+   checksum="20851135204134f12d01cc0190eb4b33"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-02-23T17:57:25.000000Z"/>
+<entry
+   committed-rev="84"
+   name="3FIT.pdb"
+   text-time="2005-07-02T06:03:24.000000Z"
+   committed-date="2005-06-18T16:48:31.223589Z"
+   checksum="7ff2259506e92789fd174cc7af4cdaee"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-07-02T06:03:24.000000Z"/>
+<entry
+   committed-rev="144"
+   name="README"
+   text-time="2005-09-22T21:50:54.000000Z"
+   committed-date="2005-08-02T18:22:31.917030Z"
+   checksum="ddd5d0f4d79a878065bc70e758f71663"
+   last-author="kljensen"
+   kind="file"
+   prop-time="2005-09-22T21:50:54.000000Z"/>
+</wc-entries>
